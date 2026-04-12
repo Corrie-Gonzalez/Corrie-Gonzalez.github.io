@@ -243,9 +243,6 @@ function addLayerControl() {
         {
             "Reference Layer Labels": satelliteLayers.labels,
             "Color Coded Vegetation Communities": vegetationFillLayer
-        },
-        {
-            collapsed: true
         }
     ).addTo(map);
 }
