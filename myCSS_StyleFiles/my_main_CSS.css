@@ -11,7 +11,7 @@ html, body {
 }
 
 body {
-  background-image: url(".../images/background_ForWebPage.jpeg");
+  background-image: url("../images/background_ForWebPage.jpeg");
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
