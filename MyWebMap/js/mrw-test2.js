@@ -19,27 +19,27 @@
 var GEOJSON_PATH = "./data/NMRipMap_MRG_Subset.geojson";
 
 var POLYGON_NAME_FIELD = "VegetationCommunityName";
-var GEOJSON_ID_FIELD   = "OBJECTID";
+var GEOJSON_ID_FIELD = "OBJECTID";
 
-var MAP_START_LAT  = 35.106766;
-var MAP_START_LON  = -106.629181;
+var MAP_START_LAT = 35.106766;
+var MAP_START_LON = -106.629181;
 var MAP_START_ZOOM = 10;
 
 var STUDY_LATITUDE_DEGREES = 35.1;
 
 // Uniform polygon style (no choropleth yet)
-var POLYGON_FILL_COLOR    = "#52b788";
-var POLYGON_FILL_OPACITY  = 0.5;
-var POLYGON_OUTLINE_COLOR   = "#555555";
-var POLYGON_OUTLINE_WIDTH   = 1;
+var POLYGON_FILL_COLOR = "#52b788";
+var POLYGON_FILL_OPACITY = 0.5;
+var POLYGON_OUTLINE_COLOR = "#555555";
+var POLYGON_OUTLINE_WIDTH = 1;
 var POLYGON_OUTLINE_OPACITY = 0.8;
 
 // -- NEW IN STEP 2 ---------------------------------------------
 // Style for the selected (clicked) polygon
-var SELECTED_OUTLINE_COLOR   = "#ff0000";
-var SELECTED_OUTLINE_WIDTH   = 4;
+var SELECTED_OUTLINE_COLOR = "#ff0000";
+var SELECTED_OUTLINE_WIDTH = 4;
 var SELECTED_OUTLINE_OPACITY = 1.0;
-var SELECTED_FILL_OPACITY    = 0.75;
+var SELECTED_FILL_OPACITY = 0.75;
 // -------------------------------------------------------------
 
 // --- Global variables ---
@@ -47,6 +47,17 @@ var map;
 var geojsonLayer;
 var currentlySelectedLayer = null;   // -- NEW IN STEP 2
 
+// -- STEP 3 -- //
+
+//$(document).ready(function () {
+
+$.getScript("./js/mrw-charts.js", function () {
+    //   console.log( data ); // Data returned
+    //   console.log( textStatus ); // Success
+    //   console.log( jqxhr.status ); // 200
+    //   console.log( "Load was performed." );
+});
+//});
 
 /* ============================================================
    PART 2: BUILDING THE MAP
@@ -58,8 +69,8 @@ function createLeafletMap() {
 
 function createSatelliteBasemap() {
     return L.tileLayer(
-        "https://gis.apfo.usda.gov/arcgis/rest/services/NAIP/USDA_CONUS_PRIME/ImageServer/tile/{z}/{y}/{x}",
-        { attribution: "Imagery (c) USGS, USDA", maxZoom: 19 }
+        "https://index.nationalmap.gov/arcgis/rest/services/USGSNAIPImageryIndex/MapServer/{z}/{y}/{x}",
+        { attribution: "Imagery (c) Esri", maxZoom: 19 }
     );
 }
 
@@ -81,24 +92,23 @@ function addBasemapToggle(satelliteLayer, simpleLayer) {
     ).addTo(map);
 }
 
-
 /* ============================================================
    PART 3: LOADING AND DISPLAYING THE GEOJSON
    ============================================================ */
 
 function getPolygonStyle() {
     return {
-        fillColor:   POLYGON_FILL_COLOR,
+        fillColor: POLYGON_FILL_COLOR,
         fillOpacity: POLYGON_FILL_OPACITY,
-        color:       POLYGON_OUTLINE_COLOR,
-        weight:      POLYGON_OUTLINE_WIDTH,
-        opacity:     POLYGON_OUTLINE_OPACITY
+        color: POLYGON_OUTLINE_COLOR,
+        weight: POLYGON_OUTLINE_WIDTH,
+        opacity: POLYGON_OUTLINE_OPACITY
     };
 }
 
 function addGeoJSONToMap(geojsonData) {
     geojsonLayer = L.geoJSON(geojsonData, {
-        style:         getPolygonStyle,
+        style: getPolygonStyle,
         onEachFeature: attachClickListener   // -- NEW IN STEP 2
     });
     geojsonLayer.addTo(map);
@@ -116,7 +126,6 @@ function loadGeoJSONFile() {
     });
 }
 
-
 /* ============================================================
    PART 4: POLYGON SELECTION  -- NEW IN STEP 2
    ============================================================ */
@@ -129,9 +138,9 @@ function clearPreviousSelection() {
 
 function highlightPolygon(layer) {
     layer.setStyle({
-        color:       SELECTED_OUTLINE_COLOR,
-        weight:      SELECTED_OUTLINE_WIDTH,
-        opacity:     SELECTED_OUTLINE_OPACITY,
+        color: SELECTED_OUTLINE_COLOR,
+        weight: SELECTED_OUTLINE_WIDTH,
+        opacity: SELECTED_OUTLINE_OPACITY,
         fillOpacity: SELECTED_FILL_OPACITY
     });
 }
@@ -145,13 +154,18 @@ function handlePolygonClick(e) {
 
     var props = clickedLayer.feature.properties;
     updateInfoPanel(props);
-    // drawETChart() will be added in Step 3
+
+    // ET line chart
+
+    var polygonID = +props[GEOJSON_ID_FIELD];
+    var polygonData = ETDataByPolygon.get(polygonID);
+    updateETChart(polygonData, props)
+    
 }
 
 function attachClickListener(feature, layer) {
     layer.on({ click: handlePolygonClick });
 }
-
 
 /* ============================================================
    PART 5: INFO PANEL  -- NEW IN STEP 2
@@ -188,6 +202,18 @@ function updateInfoPanel(properties) {
     $("#info-acres").text(convertSquareDegreesToAcres(properties.Shape_Area) + " acres");
 }
 
+function updateETChart(polygonData) {
+
+    // first clause is what all empty data looks like to my knowledge
+    if (polygonData[0]["mean"] == 0 && isNaN(polygonData[1]["mean"]) || !polygonData || polygonData.length === 0) {
+        currentPolygon = null;
+        $("#et-chart").html('<div class="et-placeholder">ET data is missing. Select a different polygon to view its ET trends. </div>'); 
+        console.log("Data is missing", polygonData[0].poly_id);
+        
+    } else {
+        drawETChart(polygonData);
+    }     
+}   
 
 /* ============================================================
    PART 6: STARTUP
@@ -198,7 +224,7 @@ $(document).ready(function () {
 
     map = createLeafletMap();
     var satelliteLayer = createSatelliteBasemap();
-    var simpleLayer    = createSimpleBasemap();
+    var simpleLayer = createSimpleBasemap();
     addStartingBasemap(satelliteLayer);
     addBasemapToggle(satelliteLayer, simpleLayer);
 

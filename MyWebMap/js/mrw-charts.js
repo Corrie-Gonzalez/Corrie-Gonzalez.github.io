@@ -13,7 +13,7 @@ var ETTooltip = d3.select("body")
 var ETDataByPolygon = new Array();
 
 d3.csv(PATH_CSV, d => ({
-    poly_id: +d.poly_id,
+    PolyID: +d.PolyID,
     year: +d.year,
     mean: +d.mean,
     p25: +d.p25,
@@ -22,7 +22,7 @@ d3.csv(PATH_CSV, d => ({
 })).then(data => {
 
     // group data
-    var grouped = d3.group(data, d => d.poly_id);
+    var grouped = d3.group(data, d => d.PolyID);
 
     // sort each group's time series
     grouped.forEach(arr => {
