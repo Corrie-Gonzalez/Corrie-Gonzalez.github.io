@@ -312,21 +312,6 @@ function addVegetationLegend() {
         }
     }, 0);
 }
-///hide legend when fill layer is turned off
-
-function wireLegendToOverlayToggle() {
-    map.on("overlayadd", function (e) {
-        if (e.layer === vegetationFillLayer) {
-            addVegetationLegend();
-        }
-    });
-
-    map.on("overlayremove", function (e) {
-        if (e.layer === vegetationFillLayer && vegetationLegend) {
-            vegetationLegend.remove();
-        }
-    });
-} 
 
 function loadGeoJSONFile() {
     console.log("Loading GeoJSON from:", GEOJSON_PATH);
@@ -442,8 +427,6 @@ $(document).ready(function () {
 
     satelliteLayers.imagery.addTo(map);
     satelliteLayers.labels.addTo(map);
-
-    wireLegendToOverlayToggle();
 
     showDefaultInfoPanel();
     loadGeoJSONFile();
