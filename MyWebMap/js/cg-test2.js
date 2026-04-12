@@ -177,13 +177,13 @@ function formatAsPercent(value) {
 }
 
 /* Used Claude AI to help with this function */
-function convertSquareDegreesToAcres(shapeArea) {
+/* function convertSquareDegreesToAcres(shapeArea) {
     var latRad = STUDY_LATITUDE_DEGREES * (Math.PI / 180);
     var metersPerLatDeg = 110947;
     var metersPerLonDeg = Math.cos(latRad) * 111320;
     var sqMeters = shapeArea * metersPerLatDeg * metersPerLonDeg;
     return (sqMeters / 4046.86).toFixed(1);
-}
+} */
 
 function showDefaultInfoPanel() {
     $("#info-name").text("← Click a polygon on the map to see details");
@@ -199,7 +199,7 @@ function updateInfoPanel(properties) {
     $("#info-tree").text(formatAsPercent(properties.Tot_Tree_Cov));
     $("#info-shrub").text(formatAsPercent(properties.Tot_Shrub_Cov));
     $("#info-herb").text(formatAsPercent(properties.Tot_Herb_Cov));
-    $("#info-acres").text((properties.Area_ac) + "  acres");
+    $("#info-acres").text((properties.Area_ac.toFixed(1)) + "  acres");
 }
 
 function updateETChart(polygonData) {
