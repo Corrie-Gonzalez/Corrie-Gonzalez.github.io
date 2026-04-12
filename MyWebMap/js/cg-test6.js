@@ -245,7 +245,7 @@ function addLayerControl() {
             "Color Coded Vegetation Communities": vegetationFillLayer
         },
         {
-            collapsed: false
+            collapsed: true
         }
     ).addTo(map);
 }
