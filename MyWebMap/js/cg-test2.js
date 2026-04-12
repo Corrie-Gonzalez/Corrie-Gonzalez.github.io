@@ -23,7 +23,7 @@ var GEOJSON_ID_FIELD = "OBJECTID";
 
 var MAP_START_LAT = 35.106766;
 var MAP_START_LON = -106.629181;
-var MAP_START_ZOOM = 10;
+var MAP_START_ZOOM = 12;
 
 var STUDY_LATITUDE_DEGREES = 35.1;
 
@@ -68,7 +68,6 @@ function createLeafletMap() {
 }
 
 function createSatelliteBasemap() {
-
     var imagery = L.tileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         {
@@ -81,12 +80,30 @@ function createSatelliteBasemap() {
         "https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
         {
             attribution: "Labels © Esri",
-            pane: "overlayPane"
+            maxZoom: 19
         }
     );
 
-    return L.layerGroup([imagery, labels]);
+    return {
+        imagery: imagery,
+        labels: labels
+    };
 }
+
+    var labels = L.tileLayer(
+        "https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+        {
+            attribution: "Labels © Esri",
+            maxZoom: 19
+        }
+    );
+
+    return {
+        imagery: imagery,
+        labels: labels
+    };
+
+
 
 function createSimpleBasemap() {
     return L.tileLayer(
@@ -240,7 +257,7 @@ function updateETChart(polygonData) {
    PART 6: STARTUP
    ============================================================ */
 
-$(document).ready(function () {
+/* $(document).ready(function () {
     console.log("Step 2: Polygon Selection + Info Panel");
 
     map = createLeafletMap();
@@ -248,6 +265,33 @@ $(document).ready(function () {
     var simpleLayer = createSimpleBasemap();
     addStartingBasemap(satelliteLayer);
     addBasemapToggle(satelliteLayer, simpleLayer);
+
+    showDefaultInfoPanel();
+    loadGeoJSONFile();
+}); */
+
+
+
+$(document).ready(function () {
+    console.log("Step 2: Polygon Selection + Info Panel");
+
+    map = createLeafletMap();
+
+    var satelliteLayers = createSatelliteBasemap();
+    var simpleLayer = createSimpleBasemap();
+
+    satelliteLayers.imagery.addTo(map);
+    satelliteLayers.labels.addTo(map);
+
+    L.control.layers(
+        {
+            "Satellite": satelliteLayers.imagery,
+            "Simple Map": simpleLayer
+        },
+        {
+            "Labels": satelliteLayers.labels
+        }
+    ).addTo(map);
 
     showDefaultInfoPanel();
     loadGeoJSONFile();
