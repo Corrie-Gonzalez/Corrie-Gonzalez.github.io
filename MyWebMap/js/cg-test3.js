@@ -30,9 +30,9 @@ var STUDY_LATITUDE_DEGREES = 35.1;
 // Uniform polygon style (no choropleth yet)
 var POLYGON_FILL_COLOR = "transparent";
 var POLYGON_FILL_OPACITY = 0;
-var POLYGON_OUTLINE_COLOR = "#f4f2f2";
+var POLYGON_OUTLINE_COLOR = "#ffffff";
 var POLYGON_OUTLINE_WIDTH = 1.2;
-var POLYGON_OUTLINE_OPACITY = 1; 
+var POLYGON_OUTLINE_OPACITY = 1;
 
 // -- NEW IN STEP 2 ---------------------------------------------
 // Style for the selected (clicked) polygon
