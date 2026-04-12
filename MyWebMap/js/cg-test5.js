@@ -443,7 +443,7 @@ $(document).ready(function () {
     satelliteLayers.imagery.addTo(map);
     satelliteLayers.labels.addTo(map);
 
-    wireLegendToOverlayToggle();
+    //wireLegendToOverlayToggle();
 
     showDefaultInfoPanel();
     loadGeoJSONFile();
