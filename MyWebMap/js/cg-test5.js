@@ -314,7 +314,7 @@ function addVegetationLegend() {
 }
 ///hide legend when fill layer is turned off
 
-function wireLegendToOverlayToggle() {
+/* function wireLegendToOverlayToggle() {
     map.on("overlayadd", function (e) {
         if (e.layer === vegetationFillLayer) {
             addVegetationLegend();
@@ -326,7 +326,7 @@ function wireLegendToOverlayToggle() {
             vegetationLegend.remove();
         }
     });
-}
+} */
 
 function loadGeoJSONFile() {
     console.log("Loading GeoJSON from:", GEOJSON_PATH);
