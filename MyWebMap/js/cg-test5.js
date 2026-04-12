@@ -241,8 +241,8 @@ function addLayerControl() {
             "Simple Map": simpleLayer
         },
         {
-            "Labels": satelliteLayers.labels,
-            "Vegetation Communities": vegetationFillLayer
+            "Reference Layer Labels": satelliteLayers.labels,
+            "Color Coded Vegetation Communities": vegetationFillLayer
         },
         {
             collapsed: false
@@ -431,30 +431,6 @@ function updateETChart(polygonData) {
    PART 6: STARTUP
    ============================================================ */
 
-/* $(document).ready(function () {
-    console.log("Step 2: Polygon Selection + Info Panel");
-
-    map = createLeafletMap();
-
-    var satelliteLayers = createSatelliteBasemap();
-    var simpleLayer = createSimpleBasemap();
-
-    satelliteLayers.imagery.addTo(map);
-    satelliteLayers.labels.addTo(map);
-
-    L.control.layers(
-        {
-            "Satellite": satelliteLayers.imagery,
-            "Simple Map": simpleLayer
-        },
-        {
-            "Labels": satelliteLayers.labels
-        }
-    ).addTo(map);
-
-    showDefaultInfoPanel();
-    loadGeoJSONFile();
-}); */
 
 $(document).ready(function () {
     console.log("Step 2: Polygon Selection + Info Panel");
