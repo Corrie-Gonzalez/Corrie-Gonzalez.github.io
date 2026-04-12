@@ -196,10 +196,11 @@ function getFillLayerStyle(feature) {
 
 function getOutlineLayerStyle() {
     return {
-        fillOpacity: OUTLINE_ONLY_FILL_OPACITY,
-        color: OUTLINE_ONLY_COLOR,
-        weight: OUTLINE_ONLY_WIDTH,
-        opacity: OUTLINE_ONLY_OPACITY
+        fillColor: POLYGON_FILL_COLOR,
+        fillOpacity: POLYGON_FILL_OPACITY,
+        color: POLYGON_OUTLINE_COLOR,
+        weight: POLYGON_OUTLINE_WIDTH,
+        opacity: POLYGON_OUTLINE_OPACITY
     };
 }
 
@@ -294,6 +295,18 @@ function wireLegendToOverlayToggle() {
         }
     });
 }
+
+function loadGeoJSONFile() {
+    console.log("Loading GeoJSON from:", GEOJSON_PATH);
+
+    $.getJSON(GEOJSON_PATH, function (data) {
+        addGeoJSONToMap(data);
+    }).fail(function () {
+        console.error("Failed to load GeoJSON from:", GEOJSON_PATH);
+        alert("Could not load map data. Check the file path: " + GEOJSON_PATH);
+    });
+}
+
 
 /* ============================================================
    PART 4: POLYGON SELECTION  -- NEW IN STEP 2
