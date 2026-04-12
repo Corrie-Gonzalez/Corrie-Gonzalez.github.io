@@ -1,6 +1,6 @@
 "use strict";
 
-var PATH_CSV = "./data/RipMapET_AllYears_Long_Update_202060323.csv";
+var PATH_CSV = "./data/RipMapET_AllYears_Long_Update_202060406.csv";
 var format = d3.format(".1f");
 
 // add tooltip
