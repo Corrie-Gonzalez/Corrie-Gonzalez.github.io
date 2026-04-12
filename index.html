@@ -1,32 +1,76 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css">
-        </link>
-        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-    </head>
-        <title>GEOG 485L/585L -- My First Map </title>
-    </head>
-    <body>
-        <p>
-            My first map will appear here:
-        </p>
-            <div id="mapId" style="height:400px; width: 600px">
+
+<head>
+    <title>Corrie D. Gonzalez</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Stylesheets-->
+    <link rel="stylesheet" href="js_css_downloaded_libraries/bootstrap.css">
+    <link rel="stylesheet" href="css_style_files/main.css">
+    <!--Scripts-->
+    <script src="js_css_downloaded_libraries/jquery.js"></script>
+    <script src="js_css_downloaded_libraries/bootstrap.min.js"></script>
+    <!--<script src="js/main.js"></script>-->
+</head>
+
+<!--Navigation bar. Source: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp-->
+
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
             </div>
-            <script>
-               //Marron Hall (My office) lat/long: 35.08195° N, 106.62324° W
-               //create a map variable "mymap" that poits to the map placed in the mapId <div>
-                // zoom the view on Marron Hall building at 17 zoom level
-                var mymap = L.map('mapId').setView([35.08195, -106.62324], 17);
+            <div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li> <a href="#">Home</a></li>
+                        <li><a href="https://corrie-gonzalez.github.io//MyWebMap/index.html" target="_blank">My Interactive Web App</a></li>
+                        <li><a href="docs/CorrieD.Gonzalez_CV_20260412.pdf" target="_blank">CV</a></li>
+                        <li><a href="https://www.linkedin.com/in/corrie-gonzalez-94a390234/" target="_blank">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-                //create a variable named "osm" that is used to hold OpenStreetMap tile layer
-                var osm = new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+    <!--Content-->
+    <!--Introduction Section-->
+    <div id="section1" class="container-fluid">
+        <h1 class="title"><br>Corrie D. Gonzalez</h1>
+        <br>
 
-                //add the OpenStretMap tile layer (i.e., the variable osm you define above) to the map
-                osm.addTo(mymap);
+        <div class="subtitle text-center">
+            Ecologist and GIS Coordinator, <a href="https://nhnm.unm.edu/" target="_blank">
+                Natural Heritage New Mexico, University of New Mexico Biology Department</a>
+            <br>
+            <br> email: cdreas88@unm.edu
+            <br>
+            <br>
+        </div>
+        <div class="personal-statement">
 
-            </script>
-    </body>
+    <div class="col-sm-8 text-left"> 
+      <h2>Welcome!</h2>
+      <p>I’m an ecologist specializing in geospatial analysis, ecological modeling, and interactive mapping. My work focuses on using data 
+        to better understand and manage natural systems.  I also build spatial tools that help translate complex environmental and biological data into 
+        clear, actionable insights for conservation. I am partiulcarly interested in riparian ecosystems, species distribution modeling, and 
+        conservation ecology.
+        <br>
+        <br>
+        Outside of work, I love spending time with my dogs, hiking, practicing yoga, and staying active—anything that gets me outdoors.</p>
+      <hr>
+    </div>
+
+
+</body>
+
 </html>
+</body>
 
-
+</html>
