@@ -247,28 +247,6 @@ function addLayerControl() {
     ).addTo(map);
 }
 
-// Force click-to-toggle instead of hover
-var container = layerControl.getContainer();
-var toggleButton = container.querySelector(".leaflet-control-layers-toggle");
-
-L.DomEvent.disableClickPropagation(container);
-
-// remove hover behavior
-container.onmouseenter = null;
-container.onmouseleave = null;
-
-// toggle ONLY when clicking the icon
-toggleButton.addEventListener("click", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (container.classList.contains("leaflet-control-layers-expanded")) {
-        container.classList.remove("leaflet-control-layers-expanded");
-    } else {
-        container.classList.add("leaflet-control-layers-expanded");
-    }
-});
-
 
 ///Add a legend for vegetationFillLayer
 
