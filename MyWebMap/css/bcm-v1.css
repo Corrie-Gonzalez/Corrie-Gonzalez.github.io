@@ -246,3 +246,44 @@ body {
         width: 100%;
     }
 }
+
+/* =========================================================
+Part 8 : LEGEND
+==========================================================*/
+
+/* PART 8: LEGEND (Leaflet overlay legend) */
+
+.legend {
+    background: white;
+    padding: 10px 12px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    max-height: 250px;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.legend h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    border: 1px solid #999;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.legend-label {
+    white-space: nowrap;
+}
