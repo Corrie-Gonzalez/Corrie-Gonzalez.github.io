@@ -68,10 +68,24 @@ function createLeafletMap() {
 }
 
 function createSatelliteBasemap() {
-    return L.tileLayer(
-        "https://index.nationalmap.gov/arcgis/rest/services/USGSNAIPImageryIndex/MapServer/{z}/{y}/{x}",
-        { attribution: "Imagery (c) Esri", maxZoom: 19 }
+
+    var imagery = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+            attribution: "Tiles © Esri",
+            maxZoom: 19
+        }
     );
+
+    var labels = L.tileLayer(
+        "https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+        {
+            attribution: "Labels © Esri",
+            pane: "overlayPane"
+        }
+    );
+
+    return L.layerGroup([imagery, labels]);
 }
 
 function createSimpleBasemap() {
