@@ -50,7 +50,7 @@ var currentlySelectedLayer = null;   // -- NEW IN STEP 2
 /*===========================================================
 Part 1B: adding new settings for Choropleth
 ================================================================*/
-var map;
+/* var map;
 var geojsonLayer;
 var currentlySelectedLayer = null;
 var layerControl;
@@ -58,7 +58,7 @@ var vegetationLegend;
 
 // Store category-to-color mapping
 var vegetationColorMap = {};
-
+ */
 // -- STEP 3 -- //
 
 //$(document).ready(function () {
