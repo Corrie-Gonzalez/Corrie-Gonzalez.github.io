@@ -1,76 +1,64 @@
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
-    <title>Corrie D. Gonzalez</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--Stylesheets-->
-    <link rel="stylesheet" href="js_css_downloaded_libraries/bootstrap.css">
-    <link rel="stylesheet" href="css_style_files/main.css">
-    <!--Scripts-->
-    <script src="js_css_downloaded_libraries/jquery.js"></script>
-    <script src="js_css_downloaded_libraries/bootstrap.min.js"></script>
-    <!--<script src="js/main.js"></script>-->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corrie D. Gonzalez</title>
+  <link rel="stylesheet" href="myCSS_StyleFiles/my_main_CSS.css" />
+  <link rel="stylesheet" href="JS_CSS_downloaded_libraries/bootsrap.css" />
 </head>
 
-<!--Navigation bar. Source: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp-->
+///Body of the document///
+<body>
 
-<body data-spy="scroll" data-target=".navbar" data-offset="50">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Corrie D. Gonzalez</div>
 
-            </div>
-            <div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav">
-                        <li> <a href="#">Home</a></li>
-                        <li><a href="https://corrie-gonzalez.github.io//MyWebMap/index.html" target="_blank">My Interactive Web App</a></li>
-                        <li><a href="docs/CorrieD.Gonzalez_CV_20260412.pdf" target="_blank">CV</a></li>
-                        <li><a href="https://www.linkedin.com/in/corrie-gonzalez-94a390234/" target="_blank">LinkedIn</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
+        ☰
+      </button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="docs/CorrieD.Gonzalez_CV_20260412.pdf" target="_blank">CV</a></li>
+        <li><a href="https://corrie-gonzalez.github.io/MyWebMap/index.html" target="_blank">Web App</a></li>
+        <li><a href="https://www.linkedin.com/in/corrie-gonzalez-94a390234/" target="_blank">LinkedIn</a></li>
+      </ul>
     </nav>
+  </header>
 
-    <!--Content-->
-    <!--Introduction Section-->
-    <div id="section1" class="container-fluid">
-        <h1 class="title"><br>Corrie D. Gonzalez</h1>
-        <br>
+  <main class="hero-section">
+    <div class="overlay"></div>
 
-        <div class="subtitle text-center">
-            Ecologist and GIS Coordinator, <a href="https://nhnm.unm.edu/" target="_blank">
-                Natural Heritage New Mexico, University of New Mexico Biology Department</a>
-            <br>
-            <br> email: cdreas88@unm.edu
-            <br>
-            <br>
-        </div>
-        <div class="personal-statement">
+    <section class="about-card">
+      <div class="profile-image-wrapper">
+        <img src="images/AboutMePic.jpeg" alt="Photo of Corrie Gonzalez" class="profile-image" />
+      </div>
 
-    <div class="col-sm-8 text-left"> 
-      <h2>Welcome!</h2>
-      <p>I’m an ecologist specializing in geospatial analysis, ecological modeling, and interactive mapping. My work focuses on using data 
-        to better understand and manage natural systems.  I also build spatial tools that help translate complex environmental and biological data into 
-        clear, actionable insights for conservation. I am partiulcarly interested in riparian ecosystems, species distribution modeling, and 
-        conservation ecology.
-        <br>
-        <br>
-        Outside of work, I love spending time with my dogs, hiking, practicing yoga, and staying active—anything that gets me outdoors.</p>
-      <hr>
-    </div>
+      <div class="about-text">
+        <h2>Hi, I’m Corrie</h2>
 
+        <p>
+          I’m an ecologist specializing in geospatial analysis, ecological modeling,
+          and interactive mapping. My work focuses on using spatial data to better
+          understand and manage natural systems, and I build tools that help turn
+          complex environmental information into clear, useful insights for conservation.
+        </p>
+
+        <p>
+          I’m especially interested in riparian ecosystems, species distribution modeling,
+          and applied conservation science.
+        </p>
+
+        <p>
+          Outside of work, I enjoy spending time with my husband and my dogs, hiking, yoga, being active, and spending time outdoors.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script src="myJS_scripts/myJS_script.js"></script>
 
 </body>
-
-</html>
-</body>
-
 </html>
