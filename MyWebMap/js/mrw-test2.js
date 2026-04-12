@@ -199,7 +199,7 @@ function updateInfoPanel(properties) {
     $("#info-tree").text(formatAsPercent(properties.Tot_Tree_Cov));
     $("#info-shrub").text(formatAsPercent(properties.Tot_Shrub_Cov));
     $("#info-herb").text(formatAsPercent(properties.Tot_Herb_Cov));
-    $("#info-acres").text(convertSquareDegreesToAcres(properties.Shape_Area) + " acres");
+    $("#info-acres").text(convertSquareDegreesToAcres(properties.Area_ac) + "Area in Acres");
 }
 
 function updateETChart(polygonData) {
@@ -208,7 +208,7 @@ function updateETChart(polygonData) {
     if (polygonData[0]["mean"] == 0 && isNaN(polygonData[1]["mean"]) || !polygonData || polygonData.length === 0) {
         currentPolygon = null;
         $("#et-chart").html('<div class="et-placeholder">ET data is missing. Select a different polygon to view its ET trends. </div>'); 
-        console.log("Data is missing", polygonData[0].poly_id);
+        console.log("Data is missing", polygonData[0].PolyID);
         
     } else {
         drawETChart(polygonData);
