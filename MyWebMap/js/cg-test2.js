@@ -199,7 +199,14 @@ function updateInfoPanel(properties) {
     $("#info-tree").text(formatAsPercent(properties.Tot_Tree_Cov));
     $("#info-shrub").text(formatAsPercent(properties.Tot_Shrub_Cov));
     $("#info-herb").text(formatAsPercent(properties.Tot_Herb_Cov));
-    $("#info-acres").text((properties.Area_ac.toFixed(1)) + "  acres");
+    $("#info-acres").text(properties.Area_ac != null
+        ? Number(properties.Area_ac)
+            .toLocaleString(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1
+            }) + " acres"
+        : "Unknown"
+    );
 }
 
 function updateETChart(polygonData) {
