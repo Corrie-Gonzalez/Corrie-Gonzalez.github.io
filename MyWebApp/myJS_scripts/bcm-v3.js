@@ -72,6 +72,14 @@ var vegetationColorMap = {};
 
 function createLeafletMap() {
     return L.map("map").setView([MAP_START_LAT, MAP_START_LON], MAP_START_ZOOM);
+
+}
+
+// Move zoom button. Source: https://stackoverflow.com/questions/33614912/how-to-locate-leaflet-zoom-control-in-a-desired-position
+function moveZoomButton() {
+    L.control.zoom({
+        position: 'bottomright'
+    }).addTo(map);
 }
 
 /* Used ChatGPT to help figure out how to look up and add the reference layer to layer on top of satellite imagery*/
@@ -124,9 +132,13 @@ function addLayerControl() {
         },
         {
             "Reference Layer Labels": satelliteLayers.labels,
-            "Data Layer": vegetationFillLayer
+            "Vegetation Community": vegetationFillLayer
+        },
+        {
+            position: "topright"
         }
     ).addTo(map);
+
 }
 
 
@@ -139,7 +151,7 @@ function addZoomToDataControl() {
         zoomToDataControl.remove();
     }
 
-    zoomToDataControl = L.control({ position: "topleft" });
+    zoomToDataControl = L.control({ position: "bottomright" });
 
     zoomToDataControl.onAdd = function () {
         var div = L.DomUtil.create("div", "leaflet-bar leaflet-control");
@@ -349,7 +361,7 @@ function getOutlineLayerStyle() {
 // Used ChatGPT to make display switching cleaner without reloading data.
 function addGeoJSONToMap(geojsonData) {
     buildVegetationColorMap(geojsonData);
-   
+
     vegetationFillLayer = L.geoJSON(geojsonData, {
         style: getFillLayerStyle,
         interactive: false
@@ -363,9 +375,10 @@ function addGeoJSONToMap(geojsonData) {
     vegetationFillLayer.addTo(map);
     vegetationOutlineLayer.addTo(map);
 
-    addZoomToDataControl();
     addLayerControl();
+    addZoomToDataControl();
     addVegetationLegend();
+    moveZoomButton();
 }
 
 /* Reference: jQuery getJSON() Method
@@ -395,8 +408,8 @@ function buildLegendItemsHtml() {
 
             html +=
                 '<div class="legend-item">' +
-                    '<span class="legend-color" style="background:' + color + ';"></span>' +
-                    '<span class="legend-label">' + category + '</span>' +
+                '<span class="legend-color" style="background:' + color + ';"></span>' +
+                '<span class="legend-label">' + category + '</span>' +
                 '</div>';
         });
 
@@ -531,7 +544,6 @@ function updateFillLayerColors() {
     }
 }
 
-
 /* POLYGON CLICK */
 
 // Selection worked, but could leave multiple polygons highlighted.
@@ -572,7 +584,6 @@ function attachClickListener(feature, layer) {
     layer.on({ click: handlePolygonClick });
 }
 
-
 /* INFO PANEL */
 
 function formatAsPercent(value) {
@@ -589,9 +600,10 @@ function showDefaultInfoPanel() {
     $("#info-shrub").text("--");
     $("#info-herb").text("--");
     $("#info-acres").text("--");
-    $("#et-chart").html('<div class="et-placeholder">Select a polygon to view its ET trend</div>');
+    d3.select("#et-chart-wrapper .et-placeholder")
+        .style("display", "flex")
+        .text("Click on a polygon to view evapotranspiration (ET) trends.");
 }
-
 function updateInfoPanel(properties) {
     $("#info-name").text(properties[POLYGON_NAME_FIELD] || "Unknown");
     $("#info-tree").text(formatAsPercent(properties.Tot_Tree_Cov));
@@ -607,37 +619,108 @@ function updateInfoPanel(properties) {
     );
 }
 
-
 /* ET CHART */
 
 /* Reference: D3 Getting Started (Line Chart Pattern)
    https://d3js.org/getting-started
    Reference for basic line chart structure (scales, axes, line generator). */
 
+
+   
 function updateETChart(polygonData) {
+
+    // for window resizer
+    currentETData = polygonData;
+
+    // clear old chart
+    d3.select("#et-chart").selectAll("*").remove();
+
+    // find polygons without et chart data
     if (
         !polygonData ||
         polygonData.length === 0 ||
         (polygonData[0]["mean"] == 0 && polygonData[1] && isNaN(polygonData[1]["mean"])) ||
         (isNaN(polygonData[0]["mean"]) && polygonData[1] && isNaN(polygonData[1]["mean"]))
     ) {
-        $("#et-chart").html('<div class="et-placeholder">ET data is missing. Select a different polygon to view its ET trends.</div>');
+        // show placeholder chart with the following text
+        d3.select("#et-chart-wrapper .et-placeholder")
+            .style("display", "flex")
+            .text("ET data is unavailable. Select a different polygon to view its ET trends.");
+
+        // removes scrollbar
+        // https://www.geeksforgeeks.org/javascript/d3-js-selection-classed-function/
+        d3.select("#et-chart-wrapper")
+            .classed("has-chart", false);
+
+        d3.select("#row-et")
+            .classed("has-chart", false);
+
+        // resets scroll all the way to the left
+        document.querySelector("#et-chart-wrapper").scrollTo({
+            left: 0,
+            behavior: "smooth"
+        });
+
+
     } else {
+        // draw chart if there is data
         drawETChart(polygonData);
+
+        // adds scrollbar
+        // https://www.geeksforgeeks.org/javascript/d3-js-selection-classed-function/
+        d3.select("#et-chart-wrapper")
+            .classed("has-chart", true);
+
+        d3.select("#row-et")
+            .classed("has-chart", true);
+
+        // resets scroll    
+        document.querySelector("#et-chart-wrapper").scrollTo({
+            left: 0,
+            behavior: "smooth"
+        });
     }
 }
-
-
 /* STARTUP */
 
 $(document).ready(function () {
     map = createLeafletMap();
+
+    // force remove zoom buttons, otherwise it shows up in top left when page is loading and then moves
+    map.zoomControl.remove();
 
     satelliteLayers = createSatelliteBasemap();
     simpleLayer = createSimpleBasemap();
 
     satelliteLayers.imagery.addTo(map);
     satelliteLayers.labels.addTo(map);
+
+    // Used CHAT GPT to figure out how to override the default Feet that was in the betterscale JS plug in
+    // Also used chatGPT to find out where to download the betterscale Plug in
+    //Used https://geoair-lab.github.io/iTRELISmap/ to help with scale bar add on
+    L.control.betterscale({
+        position: "bottomleft",
+        metric: true,
+        imperial: false
+    }).addTo(map);
+
+    // add north arrow to the map
+    //This code came from: https://geoair-lab.github.io/iTRELISmap/
+    //Img came from: https://freesvg.org/north-arrow
+    //Used CHAT GPT to figure out out to put what box around N arrow so you can see it better.
+    const north = L.control({ position: "bottomleft" });
+
+    north.onAdd = function () {
+        const div = L.DomUtil.create("div");
+        div.style.backgroundColor = "white";
+        div.style.padding = "4px";
+        div.style.borderRadius = "4px";
+        div.style.boxShadow = "0 1px 5px rgba(0,0,0,0.4)";
+        div.innerHTML = '<img src="images/north-arrow-2.png" width="45" height="45">';
+        return div;
+    };
+    north.addTo(map);
+
 
     showDefaultInfoPanel();
     loadGeoJSONFile();

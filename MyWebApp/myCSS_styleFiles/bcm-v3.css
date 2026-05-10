@@ -18,7 +18,7 @@ body {
 /* Main flex container for map and info panel */
 #main-container {
     display: flex;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
 }
 
@@ -53,6 +53,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 
@@ -62,9 +63,9 @@ body {
 .info-row {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 14px 24px;
-    flex: 1;
+    flex: 0 0 auto;
     min-height: 60px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -97,19 +98,21 @@ body {
     padding: 12px 24px;
 }
 
-/* Title text inside header */
+/* Title text inside header*/
 .header-title {
-    font-size: 18px;
+    font-size: 28px;
     font-weight: bold;
     letter-spacing: 0.03em;
 }
 
-/* Subtitle text inside header */
+/*Subtitle text inside header*/
 .header-subtitle {
-    font-size: 13px;
-    opacity: 0.75;
+    font-size: 20px;
+    font-weight: bold;
+    opacity: 0.85;
     margin-top: 3px;
 }
+
 
 /* Vegetation name row */
 #row-name {
@@ -165,36 +168,44 @@ body {
 
 /* PART 6: ET CHART */
 
-/* Container for D3 chart */
+/* Container for D3 chart and placeholder */
+#et-chart-wrapper {
+    position: relative;
+    min-height: 170px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: auto;
+    box-sizing: border-box;
+    display: block;
+}
+
+/* D3 chart */
 #et-chart {
-    min-width: 450px;
-    flex: 1;
+    min-width: 400px;
+    height: 180px;
     margin-top: 8px;
 }
 
-
- /* Button positioned in Top-right of ET container
-==========================
-adding for beta version
-============================
-  #about-ET-button {
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
-    z-index: 1000;
+#et-chart svg {
     display: block;
-    background-color: white;
-    color: #333;
-    border: 1px solid #999;
-    padding: 6px 12px;
-}   */
+    max-width: 100%;
+}
+
+/* scrollbar for chart ONLY */
+#et-chart-wrapper.has-chart {
+    overflow-x: auto;
+}
 
 /* Placeholder shown when no data is selected */
 .et-placeholder {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    height: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 160px;
     border: 2px dashed #bbb;
     border-radius: 8px;
     color: #999;
@@ -215,6 +226,90 @@ adding for beta version
     border-radius: 4px;
     pointer-events: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+}
+
+/* about ET Chart button */
+#about-et-button {
+    background-color: #cce5df;
+    color: black;
+    border: 1px solid steelblue;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* about button changes color when hovering */
+#about-et-button:hover {
+    background-color: steelblue;
+    color: white;
+    border-color: steelblue;
+}
+
+.et-legend {
+    gap: 14px;
+    align-items: center;
+    margin-left: auto;
+    font-size: 12px;
+    color: #333;
+    display: none;
+}
+
+#row-et.has-chart .et-legend {
+    display: flex;
+}
+
+.et-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.et-label-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* group title and about button */
+.et-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.et-title-group .info-label {
+    line-height: 1.2;
+}
+
+/* legend symbols */
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: steelblue;
+}
+
+.box {
+    width: 12px;
+    height: 12px;
+    background: #cce5df;
+    border: 1px solid #999;
+}
+
+/* about Riparian Map button */
+#about-riparian-map-button {
+    background-color: #d8f3dc;
+    color: black;
+    font-size: 12px;
+}
+
+/* about button changes color when hovering */
+#about-riparian-map-button:hover {
+    background-color: #74c69d;
+    color: white;
+    
 }
 
 
@@ -236,7 +331,6 @@ adding for beta version
         width: 100%;
     }
 }
-
 
 /* PART 8: COLLAPSIBLE LEGEND */
 
@@ -299,7 +393,7 @@ adding for beta version
 .legend-item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 /* Legend colors rectangles */
@@ -326,24 +420,73 @@ adding for beta version
 /* Show legend items with scroll when expanded */
 .legend-expanded .legend-body {
     display: block;
-    max-height: 70vh;
+    max-height: 380px;
     overflow-y: auto;
+    
 }
 
+/* Existing desktop/default styles */
+
+@media (max-height: 800px) {
+    .legend-expanded .legend-body {
+        max-height: 250px;
+    }
+}
+
+/* ADD mobile overrides below */
+@media (max-width: 768px) {
+
+    .legend,
+    .legend-collapsed,
+    .legend-expanded {
+        width: 180px;
+        padding: 8px;
+        font-size: 11px;
+    }
+
+    .legend-title {
+        font-size: 12px;
+    }
+
+    .legend-toggle-btn {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+
+    .legend-expanded .legend-body {
+        max-height: 140px;
+    }
+
+    .legend-color {
+        width: 10px;
+        height: 10px;
+        margin-right: 6px;
+    }
+
+    .legend-item {
+        margin-bottom: 2px;
+        align-items: center;
+    }
+
+    .legend-label {
+        line-height: 1.1;
+    }
+}
 
 /* ABOUT BUTTON */
 
 /* Button positioned in bottom-right of map */
 #about-map-button {
     position: absolute;
-    right: 15px;
-    bottom: 15px;
+    left: 10px;
+    top: 10px;
     z-index: 1000;
     display: block;
     background-color: white;
     color: #333;
     border: 1px solid #999;
-    padding: 6px 12px;
+    padding: 6px 10px;
+    font-size: 16px;
 }
 
 /* Hover effect for about button */
@@ -351,6 +494,11 @@ adding for beta version
     background-color: #f3f3f3;
 }
 
+/* Used CHAT GPT to figure out how to move legend below about map button*/
+/* Move legend below button */
+.leaflet-top.leaflet-left .legend {
+    margin-top: 55px;
+}
 
 /* ZOOM TO EXTENT BUTTON */
 
@@ -369,4 +517,21 @@ adding for beta version
 /* Hover state for zoom button */
 .zoom-data-btn:hover {
     background: #f4f4f4;
+}
+
+/* Used CHAT GPT to figure out how to modify  leaflet scale bar to make it easier to see */
+.leaflet-control-scale-line {
+    background-color: rgba(255,255,255,0.95);
+    border: 2px solid #444;
+    border-top: none;
+
+    color: #222;
+    font-size: 12px;
+    font-weight: 600;
+
+    padding: 3px 10px;
+
+    min-width: 140px;
+
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
 }
